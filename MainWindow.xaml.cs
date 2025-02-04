@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,8 @@ namespace WpfCalc
     {
         public static void PerformClick(Button btn)
             => btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-        string DecimalSeparator = System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+        //string DecimalSeparator = System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+        string DecimalSeparator = ",";
         InterfaceOperations? CurrentOperation;
         decimal FirstValue {  get; set; }
         decimal? SecondValue { get; set; }
@@ -45,14 +47,22 @@ namespace WpfCalc
 
         private void num_Click(object sender, RoutedEventArgs e)
         {
-            //if (input.Text == "0")
-            //    input.Text = "";
-            //input.Text = $"{input.Text}{((Button)sender).Content.ToString()}";
-
-            
-
+            if (CurrentOperation != null)
+                input.Clear();
             SendToInput(((Button)sender).Content.ToString());
             //SendToInput($"{((Button)sender).Content.ToString()}");
+            //void ValueSeparatorChange(decimal value)
+            //{
+            //    if (value.ToString().Contains(DecimalSeparator))
+            //    {
+            //        int DecimalSeparatorIndex = value.ToString().IndexOf(".");
+            //        char[] valueArray = value.ToString().ToCharArray();
+            //        valueArray[DecimalSeparatorIndex] = '.';
+            //        valueArray.ToString();
+            //    }
+            //}
+            //ValueSeparatorChange(SecondValue);
+            //ValueSeparatorChange(FirstValue);
         }
 
 
@@ -67,8 +77,7 @@ namespace WpfCalc
             if (CurrentOperation == null)
                 FirstValue = Convert.ToDecimal(input.Text);
             CurrentOperation = (InterfaceOperations)((Button)sender).Tag;
-            //input.Text = FirstValue.ToString();
-            input.Text = "";
+            
         }
         private void btnClear_Click(object sender, RoutedEventArgs e) => input.Text = "0";
 
@@ -81,7 +90,6 @@ namespace WpfCalc
 
         private void btnSeparator_Click(object sender, RoutedEventArgs e)
         {
-            //if (input.Text == "0") input.Text = $"{btn0.Content.ToString()}{((Button)sender).Content.ToString()}";
             if (input.Text.Contains(DecimalSeparator)) return;
 
             num_Click(sender, e);
@@ -89,6 +97,7 @@ namespace WpfCalc
 
         private void btnEqual_Click(object sender, RoutedEventArgs e)
         {
+             
             if (CurrentOperation == null) return;
             if (input.Text == "") return;
 
@@ -100,15 +109,22 @@ namespace WpfCalc
             //else
             //    return;
 
+            
+
             decimal val2 = SecondValue ?? Convert.ToDecimal(input.Text);
-
-            //input.Text = (FirstValue = CurrentOperation.DoOperation(FirstValue, (decimal)(SecondValue = val2))).ToString();
-
+            //if (FirstValue.ToString().Contains(DecimalSeparator))
+            //{
+            //    int DecimalSeparatorIndex = FirstValue.ToString().IndexOf('.');
+            //    char[] FirstValueArray = FirstValue.ToString().ToCharArray();
+            //    FirstValueArray[DecimalSeparatorIndex] = ',';
+            //}
+            
             decimal result = CurrentOperation.DoOperation(FirstValue, val2);
             input.Text = result.ToString();
             FirstValue = result;
-            //SecondValue = val2;
+            SecondValue = val2;
         }
+        
 
         private void Window_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -127,18 +143,28 @@ namespace WpfCalc
                     SendToInput(e.Text);
                     break;
                 case "*":
+                    if (CurrentOperation != null) 
+                        input.Clear();
                     btnMultiplication.PerformClick();
                     break;
                 case "/":
+                    if (CurrentOperation != null)
+                        input.Clear();
                     btnDivision.PerformClick();
                     break;
                 case "+":
+                    if (CurrentOperation != null)
+                        input.Clear();
                     btnPlus.PerformClick();
                     break;
                 case "-":
+                    if (CurrentOperation != null)
+                        input.Clear();
                     btnMinus.PerformClick();
                     break;
                 case "=":
+                    if (CurrentOperation != null)
+                        input.Clear();
                     btnEqual.PerformClick();
                     break;
 

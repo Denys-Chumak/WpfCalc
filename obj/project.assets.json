@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\denysc\\source\\repos\\WpfCalc\\WpfCalc.csproj",
+      "projectUniqueName": "C:\\Users\\denysc\\Desktop\\WpfCalc\\WpfCalc.csproj",
       "projectName": "WpfCalc",
-      "projectPath": "C:\\Users\\denysc\\source\\repos\\WpfCalc\\WpfCalc.csproj",
+      "projectPath": "C:\\Users\\denysc\\Desktop\\WpfCalc\\WpfCalc.csproj",
       "packagesPath": "C:\\Users\\denysc\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\denysc\\source\\repos\\WpfCalc\\obj\\",
+      "outputPath": "C:\\Users\\denysc\\Desktop\\WpfCalc\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
