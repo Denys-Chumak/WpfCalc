@@ -38,6 +38,8 @@ namespace WpfCalc
             btnDivision.Tag = new Division();
         }
 
+        
+
         public void SendToInput(string content)
         {
             if (input.Text == "0")
@@ -45,10 +47,9 @@ namespace WpfCalc
             input.Text = $"{input.Text}{content}";
         }
 
+
         private void num_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentOperation != null)
-                input.Clear();
             SendToInput(((Button)sender).Content.ToString());
             //SendToInput($"{((Button)sender).Content.ToString()}");
             //void ValueSeparatorChange(decimal value)
@@ -64,6 +65,7 @@ namespace WpfCalc
             //ValueSeparatorChange(SecondValue);
             //ValueSeparatorChange(FirstValue);
         }
+        
 
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -77,13 +79,14 @@ namespace WpfCalc
             if (CurrentOperation == null)
                 FirstValue = Convert.ToDecimal(input.Text);
             CurrentOperation = (InterfaceOperations)((Button)sender).Tag;
-            
+            input.Text = "";
         }
         private void btnClear_Click(object sender, RoutedEventArgs e) => input.Text = "0";
 
         private void btnClearAll_Click(object sender, RoutedEventArgs e)
         {
             FirstValue = 0;
+            SecondValue = null;
             CurrentOperation = null;
             input.Text = "0";
         }
@@ -101,15 +104,14 @@ namespace WpfCalc
             if (CurrentOperation == null) return;
             if (input.Text == "") return;
 
-            //decimal val2 = Convert.ToDecimal(input.Text);
             //decimal val2;
-
-            //if (SecondValue != null)
+            //if (SecondValue == null)
             //    val2 = Convert.ToDecimal(input.Text);
             //else
             //    return;
+            //decimal val2 = Convert.ToDecimal(input.Text);
 
-            
+
 
             decimal val2 = SecondValue ?? Convert.ToDecimal(input.Text);
             //if (FirstValue.ToString().Contains(DecimalSeparator))
@@ -118,13 +120,13 @@ namespace WpfCalc
             //    char[] FirstValueArray = FirstValue.ToString().ToCharArray();
             //    FirstValueArray[DecimalSeparatorIndex] = ',';
             //}
-            
+
             decimal result = CurrentOperation.DoOperation(FirstValue, val2);
             input.Text = result.ToString();
             FirstValue = result;
             SecondValue = val2;
         }
-        
+
 
         private void Window_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -143,7 +145,7 @@ namespace WpfCalc
                     SendToInput(e.Text);
                     break;
                 case "*":
-                    if (CurrentOperation != null) 
+                    if (CurrentOperation != null)
                         input.Clear();
                     btnMultiplication.PerformClick();
                     break;
@@ -168,14 +170,14 @@ namespace WpfCalc
                     btnEqual.PerformClick();
                     break;
 
-                 default:
+                default:
                     if (e.Text == DecimalSeparator)
                         btnSeparator.PerformClick();
                     else if (e.Text[0] == (char)8)
                         btnBack.PerformClick();
                     else if (e.Text[0] == (char)8)
                         btnEqual.PerformClick();
-                    break;                   
+                    break;
             }
             btnEqual.Focus();
         }
